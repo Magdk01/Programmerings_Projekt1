@@ -1,4 +1,3 @@
-#WIP Branch123123123
 import numpy as np
 
 # Splitting strings by chars
@@ -65,7 +64,3 @@ def dataLoad(filename):
                 print('Please input either yes/y or no/n')
 
     return data;
-
-
-
-print(dataLoad('test.txt'))
