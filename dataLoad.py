@@ -29,11 +29,16 @@ def dataLoad(filename):
         grow_r = float(splitarray[1])
         bact = float(splitarray[2])
 
-        if (temp >= 10 and temp < 60) and grow_r > 0 and (bact in {1,2,3,4}):
-            mainMatrix = np.vstack((mainMatrix, splitarray))
-        else:
-            errorMatrix = np.vstack((errorMatrix, splitarray))
-            errorlist.append(n+1)
+        try:
+            if (temp >= 10 and temp < 60) and grow_r > 0 and (bact in {1,2,3,4}):
+                mainMatrix = np.vstack((mainMatrix, splitarray))
+            else:
+                errorMatrix = np.vstack((errorMatrix, splitarray))
+                errorlist.append(n+1)
+        except ValueError:
+            print('The .txt file you are trying to load, does not have the correct formatting.\nThe format should be '
+                  'as following and seperated line by line with whitespaces:'
+                  '\nTemperature, Growth rate, Bacteria type\n')
 
     #removes the upper row of matrices to only keep vaulues
     mainMatrix = np.delete(mainMatrix, 0, axis=0 )
@@ -56,7 +61,7 @@ def dataLoad(filename):
                 if (go_on == 'yes') or (go_on == 'y'):
                     keep_running = False
                 elif go_on == 'no' or go_on == 'n':
-                    data = np.zeros([1,3])
+                    data = np.array([0])
                     keep_running = False
                 else:
                     print('\nPlease input either yes/y or no/n')
