@@ -4,7 +4,7 @@ import numpy as np
 from dataLoad import dataLoad
 from dataPlot import dataPlot
 from dataStatistics import dataStatistics
-
+np.set_printoptions(suppress=True)
 
 running = True
 selection_loop = True
@@ -69,17 +69,17 @@ while running == True:
             filter_selection = input()
 
             if int(filter_selection) == 1:
-                lower = 0
+                lower = -1
                 upper = 0
                 print('Setting ranges for filtering of growth rate:\n')
-                while lower < 1 and not 0:
+                while lower < 0:
                     try:
-                        lower = int(input('Lowest allowed growth rate:'))
+                        lower = float(input('Lowest allowed growth rate:'))
                     except ValueError:
                         print('Must be a postive number')
-                while upper < 1 and not 0 or upper < lower:
+                while upper < lower:
                     try:
-                        upper = int(input('Highest allowed growth rate: '))
+                        upper = float(input('Highest allowed growth rate: '))
                         if upper < lower:
                             print('Upper bound must be higher than lower bound.\n{} is not higher than the lower bound of'
                                   ' {}\n'.format(upper,lower))
@@ -94,21 +94,25 @@ while running == True:
                 pass
             if int(filter_selection) == 4:
                 pass
-        if lower >0 and upper > 0:
-            pass
+        if lower > 0 and upper > 0:
+            filter_data = data[(data[::, 1] > lower) & (data[::, 1] < upper)]
+        else:
+            filter_data = np.copy(data)
+
+        print(filter_data)
     #3 = Display statistics
     elif int(main_selection) == 3:
-        if np.size(data) < 2:
+        if np.size(filter_data) < 2:
             os.system('cls')
             print('No data has been loaded yet, please do so first')
-        elif np.size(data) >=3:
+        elif np.size(filter_data) >=3:
             dataStatistics()
     #4 = Generate plots
     elif int(main_selection) == 4:
-        if np.size(data) < 2:
+        if np.size(filter_data) < 2:
             os.system('cls')
             print('No data has been loaded yet, please do so first')
-        elif np.size(data) >=3:
+        elif np.size(filter_data) >=3:
             pass
            #dataPlot()
     #5 = Quit
