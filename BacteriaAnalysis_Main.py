@@ -61,15 +61,27 @@ while running == True:
             print('No data has been loaded yet, please do so first')
         elif np.size(data) >=3:
             os.system('cls')
-            print('1. Add new range filter\n2. Remove current range filter \n3. Add new bacteria filter\n'
+            print('1. Add new growth rate filter\n2. Remove current growth filter \n3. Add new bacteria filter\n'
                   '4. Remove current bacteria filter\n ')
             print('Current filters:\n')
-            if lower <= 0 and upper >= 135:
+            if lower <= 0 and upper < 135:
                 print('Bacteria is filtered in range: {} to {}'.format(lower, upper))
             filter_selection = input()
 
             if int(filter_selection) == 1:
-                pass
+                print('Setting ranges for filtering of growth rate:\n')
+                while lower < 0:
+                    try:
+                        lower = input('lowest allowed growth rate:')
+                    except ValueError:
+                        print('Must be a postive number')
+                while upper < 0:
+                    try:
+                        upper = input('highest allowed growth rate')
+                    except ValueError:
+                        print('Must be a postive number')
+            print('Upper = {} Lower = {}'.format(upper,lower))
+
             if int(filter_selection) == 2:
                 pass
             if int(filter_selection) == 3:
