@@ -12,3 +12,4 @@ def dataStatistics(data, Statistics):
     return results
 
 print(dataStatistics(data,"statistics"))
+print()
