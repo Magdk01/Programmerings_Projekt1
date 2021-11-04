@@ -28,7 +28,6 @@ def dataLoad(filename):
         temp = float(splitarray[0])
         grow_r = float(splitarray[1])
         bact = float(splitarray[2])
-
         try:
             if (temp >= 10 and temp < 60) and grow_r > 0 and (bact in {1,2,3,4}):
                 mainMatrix = np.vstack((mainMatrix, splitarray))
