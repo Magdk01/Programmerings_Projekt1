@@ -10,8 +10,8 @@ running = True
 selection_loop = True
 filename = ''
 data = np.array([0])
-lower = 0
-upper = 0
+lower = int()
+upper = int()
 main_selection = 0
 
 #Overall loop, that keeps returning to the same start, till it gets quit
@@ -64,31 +64,38 @@ while running == True:
             print('1. Add new growth rate filter\n2. Remove current growth filter \n3. Add new bacteria filter\n'
                   '4. Remove current bacteria filter\n ')
             print('Current filters:\n')
-            if lower <= 0 and upper < 135:
+            if (lower > 0) and (upper > 0) :
                 print('Bacteria is filtered in range: {} to {}'.format(lower, upper))
             filter_selection = input()
 
             if int(filter_selection) == 1:
+                lower = 0
+                upper = 0
                 print('Setting ranges for filtering of growth rate:\n')
-                while lower < 0:
+                while lower < 1 and not 0:
                     try:
-                        lower = input('lowest allowed growth rate:')
+                        lower = int(input('Lowest allowed growth rate:'))
                     except ValueError:
                         print('Must be a postive number')
-                while upper < 0:
+                while upper < 1 and not 0 or upper < lower:
                     try:
-                        upper = input('highest allowed growth rate')
+                        upper = int(input('Highest allowed growth rate: '))
+                        if upper < lower:
+                            print('Upper bound must be higher than lower bound.\n{} is not higher than the lower bound of'
+                                  ' {}\n'.format(upper,lower))
                     except ValueError:
                         print('Must be a postive number')
             print('Upper = {} Lower = {}'.format(upper,lower))
 
             if int(filter_selection) == 2:
-                pass
+                lower = 0
+                upper = 0
             if int(filter_selection) == 3:
                 pass
             if int(filter_selection) == 4:
                 pass
-
+        if lower >0 and upper > 0:
+            pass
     #3 = Display statistics
     elif int(main_selection) == 3:
         if np.size(data) < 2:
