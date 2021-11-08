@@ -2,7 +2,7 @@ import statistics
 
 import numpy as np
 from dataLoad import dataLoad
-data=dataLoad("test.txt")
+#data=dataLoad("test.txt")
 
 def dataStatistics(data, statistics):
 
@@ -47,4 +47,4 @@ def dataStatistics(data, statistics):
 
     return results
 
-print(dataStatistics(data, statistics))
+#print(dataStatistics(data, statistics))

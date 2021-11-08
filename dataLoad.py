@@ -1,10 +1,7 @@
+# dataLoad.py by Magnus Vinjebo(s214588)
 import numpy as np
 
-# Splitting strings by chars
-# def split(inp_string):
-#     return [char for char in inp_string]
-
-# all in 1 løsning
+# all in 1 solution
 # mainMatrix = np.loadtxt(filename)
 
 def dataLoad(filename):
@@ -18,8 +15,6 @@ def dataLoad(filename):
 
     #Init matricies with a empty upper row, and
     mainMatrix = np.zeros([1, 3])
-    errorMatrix = np.zeros([1, 3])
-    errorlist = []
 
     #Loop that splits each array into their 3 subelements and test's them against given conditions
     # and then either appends them to the main matrix or error matrix
@@ -32,8 +27,15 @@ def dataLoad(filename):
             if (temp >= 10 and temp < 60) and grow_r > 0 and (bact in {1,2,3,4}):
                 mainMatrix = np.vstack((mainMatrix, splitarray))
             else:
-                errorMatrix = np.vstack((errorMatrix, splitarray))
-                errorlist.append(n+1)
+                print('Line: {}, had the following erroneous data:'.format((n+1)))
+                if (temp < 10 or temp > 60):
+                    print('Temperature was: {}, which is out of the scope of 10-60'.format(temp))
+                if grow_r < 0:
+                    print('Growth rate was negative: {}'.format(grow_r))
+                if bact not in {1,2,3,4}:
+                    print('Bacteria type was not recognised')
+                print('\n')
+
         except ValueError:
             print('The .txt file you are trying to load, does not have the correct formatting.\nThe format should be '
                   'as following and seperated line by line with whitespaces:'
@@ -41,30 +43,6 @@ def dataLoad(filename):
 
     #removes the upper row of matrices to only keep vaulues
     mainMatrix = np.delete(mainMatrix, 0, axis=0 )
-    errorMatrix = np.delete(errorMatrix, 0, axis=0)
-
     mainMatrix = mainMatrix.astype('float64')
-    errorMatrix = errorMatrix.astype('float64')
-
     data = mainMatrix
-
-    if np.size(errorMatrix) > 0:
-        print('The given dataset contained the following erroneous data:\n')
-        print(errorlist)
-        print('\n')
-        print(errorMatrix)
-        keep_running = True
-        while keep_running is True:
-            go_on = (input('Do you wish to continue with the above data removed? (Y/N)\n')).lower()
-            try:
-                if (go_on == 'yes') or (go_on == 'y'):
-                    keep_running = False
-                elif go_on == 'no' or go_on == 'n':
-                    data = np.array([0])
-                    keep_running = False
-                else:
-                    print('\nPlease input either yes/y or no/n')
-            except ValueError:
-                print('Please input either yes/y or no/n')
-
     return data;
