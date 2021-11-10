@@ -32,7 +32,7 @@ while running == True:
                 print('{} is not an option from the list.\nPlease try again\n'.format(main_selection))
         except ValueError:
             print('{} is not an accepted input. Please try again\n'.format(main_selection))
-    # resetting the loop parameter
+    # resetting the loop variable
     selection_loop = True
 
     # 1 = DataLoad
@@ -56,7 +56,8 @@ while running == True:
                 pass
         # Loads the data from the dataLoad function, with the filename from the script above, and stores it as a varible
         data = dataLoad(filename)
-        # The matrix of data, is then copied so it can't get manipulated in the next steps, and a new copy always can be made
+        # The matrix of data, is then copied so it can't get manipulated in the next steps,
+        # and a new copy always can be made
         filter_data = np.copy(data)
 
     # 2 = FilterData
@@ -139,16 +140,21 @@ while running == True:
         # The application itself is done by vectored parameters on the main matrix of data.
         # it is essentially just a lot of comparisons
         if (lower >= 0 and upper > 0) and (np.sum(bac_selec)) > 0:
-            temp_data = data[(data[::, 2] == bac_selec[0]) | (data[::, 2] == bac_selec[1])
-                             | (data[::, 2] == bac_selec[2]) | (data[::, 2] == bac_selec[3])]
+            temp_data = data[(data[::, 2] == bac_selec[0])
+                             | (data[::, 2] == bac_selec[1])
+                             | (data[::, 2] == bac_selec[2])
+                             | (data[::, 2] == bac_selec[3])]
             filter_data = temp_data[(temp_data[::, 1] > lower) & (temp_data[::, 1] < upper)]
         # This filter only applies for growth rate
         elif lower >= 0 and upper > 0:
             filter_data = data[(data[::, 1] > lower) & (data[::, 1] < upper)]
         # This filter only applies for types
         elif (np.sum(bac_selec)) > 0:
-            filter_data = data[(data[::, 2] == bac_selec[0]) | (data[::, 2] == bac_selec[1])
-                               | (data[::, 2] == bac_selec[2]) | (data[::, 2] == bac_selec[3])]
+            filter_data = data[(data[::, 2] == bac_selec[0])
+                               | (data[::, 2] == bac_selec[1])
+                               | (data[::, 2] == bac_selec[2])
+                               | (data[::, 2] == bac_selec[3])]
+
         # if there are no filters, it just makes a new copy of the data from dataLoad
         else:
             filter_data = np.copy(data)
@@ -167,8 +173,7 @@ while running == True:
             os.system('cls')
             print('No data has been loaded yet, please do so first')
         elif np.size(filter_data) >= 3:
-            pass
-        # dataPlot()
+            dataPlot(filter_data)
     # 5 = Quit
     elif int(main_selection) == 5:
         running = False

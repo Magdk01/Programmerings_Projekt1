@@ -1,9 +1,9 @@
+# dataPlot by Jonathan Simonsen (s201680)
+
 import numpy as np
 import matplotlib.pyplot as plt
 from dataLoad import dataLoad
 
-# Load data set
-data = dataLoad('test.txt')
 
 def dataPlot(data):
 
@@ -92,7 +92,7 @@ def dataPlot(data):
     plt.legend()
     plt.show()
 
-dataPlot(data)
+
 
 
 
