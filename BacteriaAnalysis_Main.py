@@ -6,8 +6,8 @@ from dataLoad import dataLoad
 from dataPlot import dataPlot
 from dataStatistics import dataStatistics
 
+# Init variables
 np.set_printoptions(suppress=True)
-
 running = True
 selection_loop = True
 filename = ''
@@ -19,19 +19,20 @@ bac_selec = np.zeros(4).astype(int)
 
 # Overall loop, that keeps returning to the same start, till it gets quit
 while running == True:
-    # os.system('cls')
     print('Choose one of the following options: \n')
     print('1. Load data.\n2. Filter data.\n3. Display statistics.\n4. Generate plots.\n5. Quit.')
+
     # Primary loop to select 1 of 5 options for the data analysis
     while selection_loop is True:
         try:
-            main_selection = input('Type one of the above numbers and press enter: \n')
+            main_selection = input('Type one of the above numbers and press enter: \n').lower()
             if int(main_selection) in {1, 2, 3, 4, 5}:
                 selection_loop = False
             else:
                 print('{} is not an option from the list.\nPlease try again\n'.format(main_selection))
         except ValueError:
             print('{} is not an accepted input. Please try again\n'.format(main_selection))
+
     # resetting the loop variable
     selection_loop = True
 
@@ -41,7 +42,8 @@ while running == True:
         print('Insert the name of the .txt file you want to load:')
         while running_filename == True:
             try:
-                filequery = input('')
+                filequery = input('').lower()
+
                 # tests the input against the content of the dataFolder to look for a match
                 for i in os.listdir():
                     if filequery == i:
@@ -62,32 +64,35 @@ while running == True:
 
     # 2 = FilterData
     elif int(main_selection) == 2:
+
         # checks if any data has been lodaded yet. Checking for <2 since a single proper matrix line should be of size 3
         if np.size(data) < 2:
-            os.system('cls')
             print('No data has been loaded yet, please do so first')
         elif np.size(data) >= 3:
-            os.system('cls')
             print('1. Add new growth rate filter\n2. Remove current growth filter \n3. Add new bacteria filter\n'
                   '4. Remove current bacteria filter\n ')
             print('Current filters:\n')
+
             # Prints current filters if there are any
             if (lower >= 0) and (upper > 0):
                 print('Bacteria is filtered for growth rate in range: {} to {}'.format(lower, upper))
             if np.sum(bac_selec) > 0:
                 print('Bacteria is filtered for types: {}'.format(bac_selec))
-            filter_selection = input()
+            filter_selection = input().lower()
+
             # Setting new ranges for growth rate
             if int(filter_selection) == 1:
                 lower = -1
                 upper = 0
                 print('Setting ranges for filtering of growth rate:\n')
+
                 # Setting the lower bound
                 while lower < 0:
                     try:
                         lower = float(input('Lowest allowed growth rate:'))
                     except ValueError:
                         print('Must be a postive number')
+
                 # Setting the upper bound
                 while upper <= lower:
                     try:
@@ -98,7 +103,6 @@ while running == True:
                                   ' {}\n'.format(upper, lower))
                     except ValueError:
                         print('Must be a postive number')
-            # print('Upper = {} Lower = {}'.format(upper,lower))
 
             # Resets parameters for growth rate
             if int(filter_selection) == 2:
@@ -109,14 +113,22 @@ while running == True:
             if int(filter_selection) == 3:
                 bacteria_selection = ''
                 print('Input those bacteria you want to include, 1 at the time and press enter\n'
-                      'When you are done input q or quit to save:')
-                # Initias a loop that takes bacteria types to a array
+                      'When you are done input q or quit to save:\n\n'
+                      'Bacteria 1: Salmonella enterica\n'
+                      'Bacteria 2: Bacillus cereus\n'
+                      'Bacteria 3: Listeria\n'
+                      'Bacteria 4: Brochothrix thermosphacta\n')
+
+                # Inits a loop that takes bacteria types to a array
                 while bacteria_selection != 'q' and bac_selec[3] == 0:
-                    print('Currently in selection: {}, {}, {}, {}'.format(bac_selec[0], bac_selec[1], bac_selec[2],
+                    print('Currently in selection: {}, {}, {}, {}'.format(bac_selec[0],
+                                                                          bac_selec[1],
+                                                                          bac_selec[2],
                                                                           bac_selec[3]))
+
                     # Not the best solution, but it takes the input and puts it in the next free space in the array
                     try:
-                        bacteria_selection = input()
+                        bacteria_selection = input().lower()
                         if int(bacteria_selection) in {1, 2, 3, 4}:
                             if bac_selec[0] == 0:
                                 bac_selec[0] = bacteria_selection
@@ -149,6 +161,7 @@ while running == True:
         elif lower >= 0 and upper > 0:
             filter_data = data[(data[::, 1] > lower) & (data[::, 1] < upper)]
         # This filter only applies for types
+
         elif (np.sum(bac_selec)) > 0:
             filter_data = data[(data[::, 2] == bac_selec[0])
                                | (data[::, 2] == bac_selec[1])
@@ -159,21 +172,20 @@ while running == True:
         else:
             filter_data = np.copy(data)
 
-        print(filter_data)
     # 3 = Display statistics
     elif int(main_selection) == 3:
         if np.size(filter_data) < 2:
-            os.system('cls')
             print('No data has been loaded yet, please do so first')
         elif np.size(filter_data) >= 3:
             dataStatistics()
+
     # 4 = Generate plots
     elif int(main_selection) == 4:
         if np.size(filter_data) < 2:
-            os.system('cls')
             print('No data has been loaded yet, please do so first')
         elif np.size(filter_data) >= 3:
             dataPlot(filter_data)
+
     # 5 = Quit
     elif int(main_selection) == 5:
         running = False
