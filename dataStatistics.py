@@ -1,4 +1,4 @@
-#dataStatistics by Jacob Borregaard s181487
+# dataStatistics by Jacob Borregaard s181487
 
 import numpy as np
 
@@ -44,9 +44,7 @@ def dataStatistics(data, statistics):
     # Returns the mean growth rate of the hot data
     elif type == "7":
         results = "The mean hot growth rate is", meanHotGrowthRate
-    # Returns error message if the input is not one of the desired numbers.
-    else:
-        results = "Wrong Input"
+
 
     return results
 

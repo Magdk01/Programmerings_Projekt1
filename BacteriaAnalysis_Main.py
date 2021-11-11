@@ -172,22 +172,30 @@ while running == True:
         else:
             filter_data = np.copy(data)
 
-    # 3 = Display statistics
+    # 3 = Display statistics - By Jacob Borregaard s181487
     elif int(main_selection) == 3:
         if np.size(filter_data) < 2:
             print('No data has been loaded yet, please do so first')
         elif np.size(filter_data) >= 3:
-
-            statistics = input("Which statistic do you want?\n"
-                         "Type 1 for mean temperature.\n"
-                         "Type 2 for mean Growth rate.\n"
-                         "Type 3 for std. temperature.\n"
-                         "Type 4 for std. growth rate.\n"
-                         "Type 5 for rows.\n"
-                         "Type 6 for mean cold growth rate.\n"
-                         "Type 7 for mean hot growth rate.\n")
-
-            print(dataStatistics(filter_data, statistics))
+            # Outputs a list of options for statistical analysis of the data
+            print("Which statistic do you want?\n"
+                     "Type 1 for mean temperature.\n"
+                     "Type 2 for mean Growth rate.\n"
+                     "Type 3 for std. temperature.\n"
+                     "Type 4 for std. growth rate.\n"
+                     "Type 5 for rows.\n"
+                     "Type 6 for mean cold growth rate.\n"
+                     "Type 7 for mean hot growth rate.\n"
+                     " or type exit to return to main. \n")
+            # initiates a loop that returns statistics of the data and checks for errors in the input.
+            while True:
+                statistics = input()
+                if statistics in {"1", "2", "3", "4", "5", "6", "7"}:
+                    print(dataStatistics(filter_data, statistics))
+                    break
+                elif statistics == "exit":
+                    break
+                print("wrong input, try again")
 
     # 4 = Generate plots
     elif int(main_selection) == 4:
