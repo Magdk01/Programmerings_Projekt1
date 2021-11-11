@@ -1,7 +1,7 @@
 # dataPlot by Jonathan Simonsen (s201680)
+
 import numpy as np
 import matplotlib.pyplot as plt
-
 
 
 def dataPlot(data):

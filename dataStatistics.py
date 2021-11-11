@@ -2,6 +2,7 @@
 
 import numpy as np
 
+
 def dataStatistics(data, statistics):
 
     type = statistics

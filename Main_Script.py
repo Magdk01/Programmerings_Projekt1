@@ -1,13 +1,16 @@
 # Script by Magnus Vinjebo(s214588)
 
+# Imports
 import os
 import numpy as np
 from dataLoad import dataLoad
 from dataPlot import dataPlot
 from dataStatistics import dataStatistics
 
-# Init variables
+# Suppresses the amount of digits and scientific notation on matrices
 np.set_printoptions(suppress=True)
+
+# Init variables
 running = True
 selection_loop = True
 filename = ''
@@ -15,7 +18,7 @@ data = np.array([0])
 lower = int()
 upper = int()
 main_selection = 0
-bac_selec = np.zeros(4).astype(int)
+bac_selection = np.zeros(4).astype(int)
 
 # Overall loop, that keeps returning to the same start, till it gets quit
 while running:
@@ -42,21 +45,22 @@ while running:
         print('Insert the name of the .txt file you want to load:')
         while running_filename:
             try:
-                filequery = input('').lower()
+                file_query = input('').lower()
 
                 # tests the input against the content of the dataFolder to look for a match
                 for i in os.listdir():
-                    if filequery == i:
-                        filename = filequery
+                    if file_query == i:
+                        filename = file_query
                         running_filename = False
-                    elif filequery + '.txt' == i:
-                        filename = filequery + '.txt'
+                    elif file_query + '.txt' == i:
+                        filename = file_query + '.txt'
                         running_filename = False
                 if filename == '':
-                    print('{} was not found in dataFolder.\nPlease try again.'.format(filequery))
+                    print('{} was not found in dataFolder.\nPlease try again.'.format(file_query))
             except ValueError:
                 pass
-        # Loads the data from the dataLoad function, with the filename from the script above, and stores it as a varible
+        # Loads the data from the dataLoad function, with the filename from the script above,
+        # and stores it as a variable
         data = dataLoad(filename)
         # The matrix of data, is then copied so it can't get manipulated in the next steps,
         # and a new copy always can be made
@@ -65,7 +69,7 @@ while running:
     # 2 = FilterData
     elif int(main_selection) == 2:
 
-        # checks if any data has been lodaded yet. Checking for <2 since a single proper matrix line should be of size 3
+        # checks if any data has been loaded yet. Checking for <2 since a single proper matrix line should be of size 3
         if np.size(data) < 2:
             print('No data has been loaded yet, please do so first')
         elif np.size(data) >= 3:
@@ -76,8 +80,8 @@ while running:
             # Prints current filters if there are any
             if (lower >= 0) and (upper > 0):
                 print('Bacteria is filtered for growth rate in range: {} to {}'.format(lower, upper))
-            if np.sum(bac_selec) > 0:
-                print('Bacteria is filtered for types: {}'.format(bac_selec))
+            if np.sum(bac_selection) > 0:
+                print('Bacteria is filtered for types: {}'.format(bac_selection))
             filter_selection = input().lower()
 
             # Setting new ranges for growth rate
@@ -120,24 +124,24 @@ while running:
                       'Bacteria 4: Brochothrix thermosphacta\n')
 
                 # Inits a loop that takes bacteria types to a array
-                while bacteria_selection != 'q' and bac_selec[3] == 0:
-                    print('Currently in selection: {}, {}, {}, {}'.format(bac_selec[0],
-                                                                          bac_selec[1],
-                                                                          bac_selec[2],
-                                                                          bac_selec[3]))
+                while bacteria_selection != 'q' and bac_selection[3] == 0:
+                    print('Currently in selection: {}, {}, {}, {}'.format(bac_selection[0],
+                                                                          bac_selection[1],
+                                                                          bac_selection[2],
+                                                                          bac_selection[3]))
 
                     # Not the best solution, but it takes the input and puts it in the next free space in the array
                     try:
                         bacteria_selection = input().lower()
                         if int(bacteria_selection) in {1, 2, 3, 4}:
-                            if bac_selec[0] == 0:
-                                bac_selec[0] = bacteria_selection
-                            elif bac_selec[1] == 0:
-                                bac_selec[1] = bacteria_selection
-                            elif bac_selec[2] == 0:
-                                bac_selec[2] = bacteria_selection
-                            elif bac_selec[3] == 0:
-                                bac_selec[3] = bacteria_selection
+                            if bac_selection[0] == 0:
+                                bac_selection[0] = bacteria_selection
+                            elif bac_selection[1] == 0:
+                                bac_selection[1] = bacteria_selection
+                            elif bac_selection[2] == 0:
+                                bac_selection[2] = bacteria_selection
+                            elif bac_selection[3] == 0:
+                                bac_selection[3] = bacteria_selection
                         else:
                             print(
                                 '{} is not a known bacteria.\nAvailable bacteria is 1,2,3,4'.format(bacteria_selection))
@@ -146,30 +150,31 @@ while running:
                             print('The input is not recognised')
             # resets the bacteria selection to a array of 0's
             if int(filter_selection) == 4:
-                bac_selec = np.zeros(4).astype(int)
+                bac_selection = np.zeros(4).astype(int)
 
         # Applies the filters to the matrix of data
         # First if is for if both filters are enabled:
         # The application itself is done by vectored parameters on the main matrix of data.
         # it is essentially just a lot of comparisons
-        if (lower >= 0 and upper > 0) and (np.sum(bac_selec)) > 0:
-            temp_data = data[(data[::, 2] == bac_selec[0])
-                             | (data[::, 2] == bac_selec[1])
-                             | (data[::, 2] == bac_selec[2])
-                             | (data[::, 2] == bac_selec[3])]
+        if (lower >= 0 and upper > 0) and (np.sum(bac_selection)) > 0:
+            temp_data = data[(data[::, 2] == bac_selection[0])
+                             | (data[::, 2] == bac_selection[1])
+                             | (data[::, 2] == bac_selection[2])
+                             | (data[::, 2] == bac_selection[3])]
             filter_data = temp_data[(temp_data[::, 1] > lower) & (temp_data[::, 1] < upper)]
         # This filter only applies for growth rate
         elif lower >= 0 and upper > 0:
             filter_data = data[(data[::, 1] > lower) & (data[::, 1] < upper)]
+
         # This filter only applies for types
+        elif (np.sum(bac_selection)) > 0:
+            filter_data = data[(data[::, 2] == bac_selection[0])
+                               | (data[::, 2] == bac_selection[1])
+                               | (data[::, 2] == bac_selection[2])
+                               | (data[::, 2] == bac_selection[3])]
 
-        elif (np.sum(bac_selec)) > 0:
-            filter_data = data[(data[::, 2] == bac_selec[0])
-                               | (data[::, 2] == bac_selec[1])
-                               | (data[::, 2] == bac_selec[2])
-                               | (data[::, 2] == bac_selec[3])]
-
-        # if there are no filters, it just makes a new copy of the data from dataLoad
+        # if there are no filters, it just makes a new copy of the data from dataLoad. Which essentially returns it to
+        # the original data from dataLoad
         else:
             filter_data = np.copy(data)
 
