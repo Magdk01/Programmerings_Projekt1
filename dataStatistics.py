@@ -1,4 +1,4 @@
-
+#dataStatistics by Jacob Borregaard s181487
 
 import numpy as np
 
