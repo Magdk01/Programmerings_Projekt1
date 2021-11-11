@@ -1,5 +1,4 @@
 # dataPlot by Jonathan Simonsen (s201680)
-
 import numpy as np
 import matplotlib.pyplot as plt
 from dataLoad import dataLoad
@@ -56,24 +55,32 @@ def dataPlot(data):
     plt.figure(figsize=(10, 7))
 
     # Bacteria type 1 points and plot
-    x1 = bact_one[::, 0]
-    y1 = bact_one[::, 1]
-    plt.plot(x1, y1, label="Salmonella enterica", color="cyan")
+    # if statement ensures there is enough data for a line to be plotted
+    if np.size(bact_one) >= 2:
+        x1 = bact_one[::, 0]
+        y1 = bact_one[::, 1]
+        plt.plot(x1, y1, label="Salmonella enterica", color="crimson")
 
     # Bacteria type 2 points and plot
-    x2 = bact_two[::, 0]
-    y2 = bact_two[::, 1]
-    plt.plot(x2, y2, label="Bacillus cereus", color="magenta")
+    if np.size(bact_two) >= 2:
+        x2 = bact_two[::, 0]
+        y2 = bact_two[::, 1]
+        plt.plot(x2, y2, label="Bacillus cereus", color="orange")
+
 
     # Bacteria type 3 points and plot
-    x3 = bact_three[::, 0]
-    y3 = bact_three[::, 1]
-    plt.plot(x3, y3, label="Listeria", color="lime")
+    if np.size(bact_three) >= 2:
+        x3 = bact_three[::, 0]
+        y3 = bact_three[::, 1]
+        plt.plot(x3, y3, label="Listeria", color="forestgreen")
+
 
     # Bacteria type 4 points and plot
-    x4 = bact_four[::, 0]
-    y4 = bact_four[::, 1]
-    plt.plot(x4, y4, label="Brochothrix thermosphacta", color="crimson")
+    if np.size(bact_four) >= 2:
+        x4 = bact_four[::, 0]
+        y4 = bact_four[::, 1]
+        plt.plot(x4, y4, label="Brochothrix thermosphacta", color="navy")
+
 
     # Axis labels and title of plot
     plt.xlabel("Temperature")
@@ -91,6 +98,7 @@ def dataPlot(data):
     # Show a legend on the plot
     plt.legend()
     plt.show()
+
 
 
 
