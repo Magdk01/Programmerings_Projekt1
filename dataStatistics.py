@@ -1,50 +1,52 @@
-import statistics
+
 
 import numpy as np
-from dataLoad import dataLoad
-#data=dataLoad("test.txt")
 
 def dataStatistics(data, statistics):
 
-    results = data
-    meanTemperature = np.mean(data[::,0])
-    meanGrowthrate = np.mean(data[::,1])
-    stdTemperature = np.std(data[::,0])
-    stdGrowthrate = np.std(data[::,1])
-    rows = np.shape(data)[0]
+    type = statistics
 
-    type = input("Which statistic do you want?"
-                 "Type 1 for mean temperature."
-                 "Type 2 for mean Growth rate."
-                 "Type 3 for std. temperature."
-                 "Type 4 for std. growth rate."
-                 "Type 5 for rows."
-                 "Type 6 for mean cold growth rate."
-                 "Type 7 for mean hot growth rate.")
+    # Filters the hot and cold data by creating new lists
+    cold_data = data[(data[::, 0] < 20)]
+    hot_data = data[(data[::, 0] > 50)]
 
-    if type == "1":
-        statistics = meanTemperature
-    elif type == "2":
-        statistics = meanGrowthrate
-    elif type == "3":
-        statistics = stdTemperature
-    elif type == "4":
-        statistics = stdGrowthrate
-    elif type == "5":
-        statistics = rows
+    # Calculates the mean growth rate of the hot and cold data
+    # If statements ensures output if there is no hot or cold data
+    if np.size(cold_data) == 0:
+        meanColdGrowthRate = "There is no cold data"
     else:
-        print("Wrong type of input")
-    print(type)
+        meanColdGrowthRate = np.mean(cold_data[::, 1])
 
+    if np.size(hot_data) == 0:
+        meanHotGrowthRate = "There is no hot data"
+    else:
+        meanHotGrowthRate = np.mean(hot_data[::, 1])
 
-
-    print(meanTemperature)
-    print(meanGrowthrate)
-    print(stdGrowthrate)
-    print(stdTemperature)
-    print(rows)
-
+    # Takes input from main and returns the proper data statistic
+    # Returns mean temperature
+    if type == "1":
+        results = "The mean temperature is", np.mean(data[::, 0])
+    # Returns mean growth rate
+    elif type == "2":
+        results = "The mean growth rate is", np.mean(data[::, 1])
+    # Returns standard deviation of temperature
+    elif type == "3":
+        results = "The standard deviation of the temperature is", np.std(data[::, 0])
+    # Returns standard deviation of growth rate
+    elif type == "4":
+        results = "The standard deviation of the growth rate is", np.std(data[::, 1])
+    # Returns the total number of rows in the data set
+    elif type == "5":
+        results = "The total number of rows in the data is", np.shape(data)[0]
+    # Returns the mean growth rate of the cold data
+    elif type == "6":
+        results = "The mean cold growth rate is", meanColdGrowthRate
+    # Returns the mean growth rate of the hot data
+    elif type == "7":
+        results = "The mean hot growth rate is", meanHotGrowthRate
+    # Returns error message if the input is not one of the desired numbers.
+    else:
+        results = "Wrong Input"
 
     return results
 
-#print(dataStatistics(data, statistics))
