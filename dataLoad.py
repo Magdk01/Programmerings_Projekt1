@@ -26,11 +26,11 @@ def dataLoad(filename):
         grow_r = float(splitarray[1])
         bact = float(splitarray[2])
         try:
-            if (temp >= 10 and temp < 60) and grow_r > 0 and (bact in {1, 2, 3, 4}):
+            if (10 <= temp < 60) and grow_r > 0 and (bact in {1, 2, 3, 4}):
                 mainMatrix = np.vstack((mainMatrix, splitarray))
             else:
                 print('Line: {}, had the following erroneous data:'.format((n + 1)))
-                if (temp < 10 or temp > 60):
+                if temp < 10 or temp > 60:
                     print('Temperature was: {}, which is out of the scope of 10-60'.format(temp))
                 if grow_r < 0:
                     print('Growth rate was negative: {}'.format(grow_r))
@@ -47,4 +47,4 @@ def dataLoad(filename):
     mainMatrix = np.delete(mainMatrix, 0, axis=0)
     mainMatrix = mainMatrix.astype('float64')
     data = mainMatrix
-    return data;
+    return data

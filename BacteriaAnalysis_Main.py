@@ -18,7 +18,7 @@ main_selection = 0
 bac_selec = np.zeros(4).astype(int)
 
 # Overall loop, that keeps returning to the same start, till it gets quit
-while running == True:
+while running:
     print('Choose one of the following options: \n')
     print('1. Load data.\n2. Filter data.\n3. Display statistics.\n4. Generate plots.\n5. Quit.')
 
@@ -40,7 +40,7 @@ while running == True:
     if int(main_selection) == 1:
         running_filename = True
         print('Insert the name of the .txt file you want to load:')
-        while running_filename == True:
+        while running_filename:
             try:
                 filequery = input('').lower()
 
@@ -147,6 +147,7 @@ while running == True:
             # resets the bacteria selection to a array of 0's
             if int(filter_selection) == 4:
                 bac_selec = np.zeros(4).astype(int)
+
         # Applies the filters to the matrix of data
         # First if is for if both filters are enabled:
         # The application itself is done by vectored parameters on the main matrix of data.
@@ -172,26 +173,27 @@ while running == True:
         else:
             filter_data = np.copy(data)
 
-    # 3 = Display statistics - By Jacob Borregaard s181487
+    # 3 = Display statistics - By Jacob Borregaard (s181487)
     elif int(main_selection) == 3:
         if np.size(filter_data) < 2:
             print('No data has been loaded yet, please do so first')
         elif np.size(filter_data) >= 3:
             # Outputs a list of options for statistical analysis of the data
             print("Which statistic do you want?\n"
-                     "Type 1 for mean temperature.\n"
-                     "Type 2 for mean Growth rate.\n"
-                     "Type 3 for std. temperature.\n"
-                     "Type 4 for std. growth rate.\n"
-                     "Type 5 for rows.\n"
-                     "Type 6 for mean cold growth rate.\n"
-                     "Type 7 for mean hot growth rate.\n"
-                     " or type exit to return to main. \n")
+                  "Type 1 for mean temperature.\n"
+                  "Type 2 for mean Growth rate.\n"
+                  "Type 3 for std. temperature.\n"
+                  "Type 4 for std. growth rate.\n"
+                  "Type 5 for rows.\n"
+                  "Type 6 for mean cold growth rate.\n"
+                  "Type 7 for mean hot growth rate.\n"
+                  " or type exit to return to main. \n")
             # initiates a loop that returns statistics of the data and checks for errors in the input.
             while True:
                 statistics = input()
                 if statistics in {"1", "2", "3", "4", "5", "6", "7"}:
-                    print(dataStatistics(filter_data, statistics))
+                    stats = dataStatistics(filter_data, statistics)
+                    print('{}: {}\n'.format(stats[0], round(stats[1], 3)))
                     break
                 elif statistics == "exit":
                     break
